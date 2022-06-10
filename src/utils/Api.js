@@ -4,18 +4,20 @@ class Api {
     this._headers = headers;
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
   // Базовый запрос без тела
   _fetch(way, methodName) {
     return fetch(`${this._url}${way}`, {
       method: methodName,
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   // Запрос с телом
@@ -24,13 +26,7 @@ class Api {
       method: methodName,
       headers: this._headers,
       body: JSON.stringify(bodyContent),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   // Получаем массив всех карточек
