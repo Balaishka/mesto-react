@@ -1,0 +1,10 @@
+.photo__img {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  cursor: pointer;
+  display: block;
+  min-height: 282px;
+  max-height: 282px;
+  object-fit: cover;
+  width: 100%;
+}
