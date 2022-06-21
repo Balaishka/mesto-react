@@ -49,6 +49,14 @@ class Api {
     return this._fetch(`cards/${cardId}/likes`, "DELETE");
   }
 
+  changeLikeCardStatus(cardId, isLiked) {
+    if(!isLiked) {
+      return this._fetch(`cards/${cardId}/likes`, "DELETE");
+    } else {
+      return this._fetch(`cards/${cardId}/likes`, "PUT");
+    }
+  }
+
   // Добавляем новую карточку
   addNewCard(newCard) {
     return this._fetchWithBody("cards", "POST", newCard);
