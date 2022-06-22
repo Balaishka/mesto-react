@@ -50,7 +50,7 @@ class Api {
   }
 
   changeLikeCardStatus(cardId, isLiked) {
-    if(!isLiked) {
+    if (!isLiked) {
       return this._fetch(`cards/${cardId}/likes`, "DELETE");
     } else {
       return this._fetch(`cards/${cardId}/likes`, "PUT");
