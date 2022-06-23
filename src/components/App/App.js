@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
@@ -12,34 +12,31 @@ import DeleteCardPopup from "../DeleteCardPopup/DeleteCardPopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
+    useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] =
-    React.useState(false);
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+    useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [selectedCard, setSelectedCard] = useState({});
 
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     name: "",
     about: "",
     avatar: "",
     _id: "",
   });
 
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = useState([]);
 
-  const [isLoadingAddPlace, setIsLoadingAddPlace] = React.useState(false);
-  const [isLoadingEditProfile, setIsLoadingEditProfile] = React.useState(false);
-  const [isLoadingEditAvatar, setIsLoadingEditAvatar] = React.useState(false);
-  const [isLoadingDeleteCard, setIsLoadingDeleteCard] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [cardIdForDelete, setCardIdForDelete] = React.useState("");
+  const [cardIdForDelete, setCardIdForDelete] = useState("");
 
   // Получаем все карточки
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getAllCards()
       .then((data) => {
@@ -51,7 +48,7 @@ function App() {
   }, []);
 
   // Получаем всю информацию о пользователе
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getAllUserInfo()
       .then((data) => {
@@ -96,24 +93,19 @@ function App() {
   // Обновляем информацию о пользователе
   function handleUpdateUser(newUserInfo) {
 
-    setIsLoadingEditProfile(true);
+    setIsLoading(true);
 
     api
       .setUserInfo(newUserInfo)
       .then((data) => {
-        setCurrentUser({
-          name: data.name,
-          about: data.about,
-          avatar: data.avatar,
-          _id: data._id,
-        });
+        setCurrentUser(data);
         return closeAllPopups();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err.status}`);
       })
       .finally(() => {
-        setIsLoadingEditProfile(false);
+        setIsLoading(false);
       });
 
   }
@@ -121,24 +113,19 @@ function App() {
   // Обновляем аватар
   function handleUpdateAvatar(newAvatar) {
 
-    setIsLoadingEditAvatar(true);
+    setIsLoading(true);
 
     api
       .setUserAvatar(newAvatar)
       .then((data) => {
-        setCurrentUser({
-          name: data.name,
-          about: data.about,
-          avatar: data.avatar,
-          _id: data._id,
-        });
+        setCurrentUser(data);
         return closeAllPopups();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err.status}`);
       })
       .finally(() => {
-        setIsLoadingEditAvatar(false);
+        setIsLoading(false);
       });
 
   }
@@ -171,7 +158,7 @@ function App() {
   // Удаляем свою карточку
   function handleDeleteCard(cardId) {
 
-    setIsLoadingDeleteCard(true);
+    setIsLoading(true);
 
     api
       .deleteCard(cardId)
@@ -183,7 +170,7 @@ function App() {
         console.log(`Ошибка: ${err.status}`);
       })
       .finally(() => {
-        setIsLoadingDeleteCard(false);
+        setIsLoading(false);
       });
 
   }
@@ -191,7 +178,7 @@ function App() {
   // Добавляем новую карточку
   function handleAddPlaceSubmit(newCard) {
 
-    setIsLoadingAddPlace(true);
+    setIsLoading(true);
 
     api
       .addNewCard(newCard)
@@ -203,7 +190,7 @@ function App() {
         console.log(`Ошибка: ${err.status}`);
       })
       .finally(() => {
-        setIsLoadingAddPlace(false);
+        setIsLoading(false);
       });
       
   }
@@ -229,28 +216,28 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
-          isLoading={isLoadingEditProfile}
+          isLoading={isLoading}
         />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
-          isLoading={isLoadingAddPlace}
+          isLoading={isLoading}
         />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoadingEditAvatar}
+          isLoading={isLoading}
         />
 
         <DeleteCardPopup
           isOpen={isDeleteCardPopupOpen}
           onClose={closeAllPopups}
           onDeleteCard={handleDeleteCard}
-          isLoading={isLoadingDeleteCard}
+          isLoading={isLoading}
           cardId={cardIdForDelete}
         />
 

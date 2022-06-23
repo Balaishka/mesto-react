@@ -45,16 +45,14 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           <p className="photo__likes">{card.likes.length}</p>
         </div>
       </div>
-      {isOwn ? (
+      {isOwn && 
         <button
           type="button"
           className="photo__delete-btn"
           aria-label="Удалить"
           onClick={handleCardDelete}
         ></button>
-      ) : (
-        ""
-      )}
+      }
     </li>
   );
 }
