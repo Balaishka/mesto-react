@@ -10,3 +10,5 @@
 Планируемые доработки: валидация форм.
 
 Стек технологий: React, JavaScript, HTML, CSS, Figma.
+
+[Ссылка на проект](https://balaishka.github.io/mesto-react/)
